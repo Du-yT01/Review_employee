@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Đánh Giá Nhân Sự 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--gradient-1);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-title .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .kpi-card:nth-child(1)::before {
+            background: var(--gradient-1);
+        }
+
+        .kpi-card:nth-child(2)::before {
+            background: var(--gradient-4);
+        }
+
+        .kpi-card:nth-child(3)::before {
+            background: var(--gradient-3);
+        }
+
+        .kpi-card:nth-child(4)::before {
+            background: var(--gradient-2);
+        }
+
+        .kpi-card .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kpi-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .kpi-card:nth-child(1) .value {
+            color: #a78bfa;
+        }
+
+        .kpi-card:nth-child(2) .value {
+            color: #34d399;
+        }
+
+        .kpi-card:nth-child(3) .value {
+            color: #60a5fa;
+        }
+
+        .kpi-card:nth-child(4) .value {
+            color: #fb7185;
+        }
+
+        .kpi-card .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .kpi-card .icon-bg {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            opacity: 0.1;
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .chart-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-card h3::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Full Width Chart */
+        .full-width-chart {
+            grid-column: 1 / -1;
+        }
+
+        .full-width-chart .chart-container {
+            height: 400px;
+        }
+
+        /* Table Styles */
+        .table-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .group-header {
+            background: rgba(99, 102, 241, 0.1) !important;
+            font-weight: 600;
+        }
+
+        .score-cell {
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .score-good {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .score-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .score-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        /* Demo Projects Grid */
+        .demo-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 15px;
+            margin-bottom: 40px;
+            overflow-x: auto;
+        }
+
+        .demo-grid .demo-card {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .demo-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: default;
+            overflow: hidden;
+        }
+
+        .demo-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .demo-card .name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .demo-card .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: default;
+            position: relative;
+        }
+
+        .project-card:hover {
+            background: var(--bg-card-hover);
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .project-card .name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        .project-card .info {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .project-card .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .status-complete {
+            background: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+        }
+
+        .status-progress {
+            background: rgba(168, 85, 247, 0.2);
+            color: #c084fc;
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
+        .diff-easy {
+            background: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+        }
+
+        .diff-medium {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .diff-hard {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .kpi-card,
+        .chart-card,
+        .table-card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .kpi-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .kpi-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .kpi-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .kpi-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📊 Báo Cáo Đánh Giá Nhân Sự 2025</h1>
+            <p>Tổng hợp kết quả đánh giá theo Quý 1-2 và Quý 3-4</p>
+        </header>
+
+        <!-- Section 1: KPI Cards -->
+        <section>
+            <div class="section-title">
+                <div class="icon" style="background: var(--gradient-1);">📈</div>
+                <h2>Tổng quan</h2>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="label">Tổng dự án thực hiện</div>
+                    <div class="value">7</div>
+                    <div class="subtitle">Dự án trong năm 2025</div>
+                    <div class="icon-bg">📁</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Dự án hoàn thành</div>
+                    <div class="value">4</div>
+                    <div class="subtitle">57% tỷ lệ hoàn thành</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 57%; background: var(--gradient-4);"></div>
+                    </div>
+                    <div class="icon-bg">✅</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Dự án Demo</div>
+                    <div class="value">9</div>
+                    <div class="subtitle">Sản phẩm nghiên cứu</div>
+                    <div class="icon-bg">🎯</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Điểm Quý 3-4</div>
+                    <div class="value">109<span style="font-size: 1rem; opacity: 0.6;">/136</span></div>
+                    <div class="subtitle">Tăng từ 92 điểm (Quý 1-2)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%; background: var(--gradient-2);"></div>
+                    </div>
+                    <div class="icon-bg">⭐</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Project Charts -->
+        <section>
+            <div class="section-title">
+                <div class="icon" style="background: var(--gradient-3);">📋</div>
+                <h2>Phân tích Dự án Thực hiện</h2>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Phân bổ theo Mức độ khó</h3>
+                    <div class="chart-container">
+                        <canvas id="difficultyChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Trạng thái Dự án</h3>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>So sánh Quý 1-2 vs Quý 3-4</h3>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Project Listing -->
+        <section>
+            <div class="section-title">
+                <div class="icon" style="background: var(--gradient-4);">📁</div>
+                <h2>Danh sách Dự án Thực hiện</h2>
+            </div>
+            <div class="project-grid" id="projectGrid">
+                <!-- Will be populated by JS -->
+            </div>
+        </section>
+
+        <!-- Section: Demo Projects -->
+        <section>
+            <div class="section-title">
+                <div class="icon" style="background: var(--gradient-1);">🚀</div>
+                <h2>Dự án Demo</h2>
+            </div>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="name">NH</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">NC</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">TL</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">LB</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">NK</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">NS</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">AN</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">VC</div>
+                    <div class="label">Demo Project</div>
+                </div>
+                <div class="demo-card">
+                    <div class="name">3S</div>
+                    <div class="label">Demo Project</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Detailed Table -->
+        <section>
+            <div class="section-title">
+                <div class="icon" style="background: var(--gradient-4);">📝</div>
+                <h2>Bảng Chi tiết Đánh giá</h2>
+            </div>
+            <div class="table-card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nhóm tiêu chí</th>
+                                <th>Tiêu chí đánh giá</th>
+                                <th>Trọng số</th>
+                                <th>Kỳ vọng</th>
+                                <th>Quý 1-2</th>
+                                <th>Quý 3-4</th>
+                                <th>Tiến bộ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="evaluationTable">
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Báo cáo được tạo tự động từ dữ liệu Task_detail.xlsx | © 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data from Excel
+        const projectData = [
+            { name: "Viettin", startDate: "2025-03", difficulty: "Dễ", status: "Hoàn thành", completion: "Xuất sắc" },
+            { name: "Lan Chi", startDate: "2025-05", difficulty: "Dễ", status: "Hoàn thành", completion: "Tốt" },
+            { name: "MECC", startDate: "2025-07", difficulty: "Trung bình", status: "Đang làm", completion: "" },
+            { name: "Cộng", startDate: "2025-08", difficulty: "Khó", status: "Hoàn thành", completion: "Tốt" },
+            { name: "Hudland", startDate: "2025-10", difficulty: "Trung bình", status: "Hoàn thành", completion: "Tốt" },
+            { name: "NKV", startDate: "2025-11", difficulty: "Trung bình", status: "Đang làm", completion: "" },
+            { name: "Thanh Phước", startDate: "2025-12", difficulty: "Khó", status: "Đang làm", completion: "" }
+        ];
+
+        const evaluationData = [
+            { group: "Tính cách", criteria: "Trách nhiệm", weight: 3, expected: 5, q12: 4, q34: 4 },
+            { group: "", criteria: "Trung thực", weight: 3, expected: 5, q12: 5, q34: 5 },
+            { group: "", criteria: "Chủ động", weight: 3, expected: 4, q12: 3, q34: 3 },
+            { group: "", criteria: "Vượt kỳ vọng", weight: 2, expected: 3, q12: 1, q34: 2 },
+            { group: "", criteria: "Không ngại khó", weight: 2, expected: 2, q12: 2, q34: 2 },
+            { group: "", criteria: "Cẩn thận", weight: 1, expected: 3, q12: 1, q34: 2 },
+            { group: "", criteria: "Cầu tiến", weight: 1, expected: 2, q12: 1, q34: 2 },
+            { group: "", criteria: "Không ngại bẩn tay", weight: 1, expected: 2, q12: 2, q34: 2 },
+            { group: "Tư duy", criteria: "Tư duy logic", weight: 3, expected: 3, q12: 3, q34: 3 },
+            { group: "", criteria: "Tư duy tổng quan vấn đề", weight: 2, expected: 3, q12: 2, q34: 2 },
+            { group: "", criteria: "Tư duy giải quyết vấn đề", weight: 2, expected: 3, q12: 2, q34: 2 },
+            { group: "", criteria: "Tư duy business domain", weight: 3, expected: 3, q12: 1, q34: 2 },
+            { group: "Kỹ năng mềm", criteria: "Kỹ năng giao tiếp", weight: 2, expected: 3, q12: 3, q34: 3 },
+            { group: "Chất lượng công việc", criteria: "Về flow báo cáo", weight: 2, expected: 4, q12: 1, q34: 3 },
+            { group: "", criteria: "Technical skill", weight: 2, expected: 3, q12: 3, q34: 3 },
+            { group: "", criteria: "Thẩm mỹ", weight: 3, expected: 4, q12: 1, q34: 2 },
+            { group: "Tiến độ công việc", criteria: "Đạt timeline khách hàng", weight: 3, expected: 5, q12: 3, q34: 4 }
+        ];
+
+        // Chart.js default options
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+
+        // 1. Difficulty Pie Chart
+        const difficultyCtx = document.getElementById('difficultyChart').getContext('2d');
+        new Chart(difficultyCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Dễ', 'Trung bình', 'Khó'],
+                datasets: [{
+                    data: [2, 3, 2],
+                    backgroundColor: [
+                        'rgba(52, 211, 153, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(248, 113, 113, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 211, 153, 1)',
+                        'rgba(251, 191, 36, 1)',
+                        'rgba(248, 113, 113, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, usePointStyle: true }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: { weight: 'bold', size: 14 },
+                        formatter: (value, ctx) => {
+                            return value + ' dự án';
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        // 2. Status Donut Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Hoàn thành', 'Đang làm'],
+                datasets: [{
+                    data: [4, 3],
+                    backgroundColor: [
+                        'rgba(99, 102, 241, 0.8)',
+                        'rgba(168, 85, 247, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(99, 102, 241, 1)',
+                        'rgba(168, 85, 247, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, usePointStyle: true }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: { weight: 'bold', size: 14 },
+                        formatter: (value, ctx) => {
+                            return value + ' dự án';
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        // 3. Populate Project Grid
+        const projectGrid = document.getElementById('projectGrid');
+        projectData.forEach(project => {
+            const diffClass = project.difficulty === 'Dễ' ? 'diff-easy' :
+                (project.difficulty === 'Trung bình' ? 'diff-medium' : 'diff-hard');
+            const statusClass = project.status === 'Hoàn thành' ? 'status-complete' : 'status-progress';
+            const completionText = project.completion || project.status;
+
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.innerHTML = `
+                <span class="difficulty-badge ${diffClass}">${project.difficulty}</span>
+                <div class="name">${project.name}</div>
+                <div class="info">Bắt đầu: ${project.startDate}</div>
+                <span class="status-badge ${statusClass}">${completionText}</span>
+            `;
+            projectGrid.appendChild(card);
+        });
+
+        // 4. Radar Chart - Quarterly Comparison
+        const radarCtx = document.getElementById('radarChart').getContext('2d');
+
+        // Calculate group scores
+        const groupScores = {
+            "Tính cách": { expected: 0, q12: 0, q34: 0 },
+            "Tư duy": { expected: 0, q12: 0, q34: 0 },
+            "Kỹ năng mềm": { expected: 0, q12: 0, q34: 0 },
+            "Chất lượng công việc": { expected: 0, q12: 0, q34: 0 },
+            "Tiến độ công việc": { expected: 0, q12: 0, q34: 0 }
+        };
+
+        let currentGroup = "";
+        evaluationData.forEach(item => {
+            if (item.group !== "") currentGroup = item.group;
+            groupScores[currentGroup].expected += item.expected * item.weight;
+            groupScores[currentGroup].q12 += item.q12 * item.weight;
+            groupScores[currentGroup].q34 += item.q34 * item.weight;
+        });
+
+        // Normalize to 5-point scale (rounded to 1 decimal)
+        const labels = Object.keys(groupScores);
+        const q12Data = labels.map(l => (groupScores[l].q12 / groupScores[l].expected * 5).toFixed(1));
+        const q34Data = labels.map(l => (groupScores[l].q34 / groupScores[l].expected * 5).toFixed(1));
+
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Kỳ vọng (5đ)',
+                        data: [5, 5, 5, 5, 5],
+                        borderColor: 'rgba(156, 163, 175, 0.5)',
+                        backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                        borderWidth: 2,
+                        borderDash: [5, 5]
+                    },
+                    {
+                        label: 'Quý 1-2',
+                        data: q12Data,
+                        borderColor: 'rgba(251, 191, 36, 1)',
+                        backgroundColor: 'rgba(251, 191, 36, 0.2)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(251, 191, 36, 1)'
+                    },
+                    {
+                        label: 'Quý 3-4',
+                        data: q34Data,
+                        borderColor: 'rgba(52, 211, 153, 1)',
+                        backgroundColor: 'rgba(52, 211, 153, 0.2)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(52, 211, 153, 1)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 15, usePointStyle: true }
+                    },
+                    datalabels: {
+                        display: false
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 5.5,
+                        ticks: { stepSize: 1, display: false },
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        pointLabels: { font: { size: 11 } }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        // 6. Populate Evaluation Table
+        const tableBody = document.getElementById('evaluationTable');
+        let lastGroup = '';
+
+        evaluationData.forEach(item => {
+            const row = document.createElement('tr');
+            const displayGroup = item.group || '';
+
+            if (item.group !== '' && item.group !== lastGroup) {
+                row.classList.add('group-header');
+                lastGroup = item.group;
+            }
+
+            // Calculate progress
+            const diff = item.q34 - item.q12;
+            let progressText = diff > 0 ? `+${diff} ↑` : (diff < 0 ? `${diff} ↓` : '—');
+            let progressClass = diff > 0 ? 'score-good' : (diff < 0 ? 'score-danger' : '');
+
+            // Score class based on comparison with expected
+            const q12Class = item.q12 >= item.expected ? 'score-good' : (item.q12 >= item.expected - 1 ? 'score-warning' : 'score-danger');
+            const q34Class = item.q34 >= item.expected ? 'score-good' : (item.q34 >= item.expected - 1 ? 'score-warning' : 'score-danger');
+
+            row.innerHTML = `
+                <td><strong>${displayGroup}</strong></td>
+                <td>${item.criteria}</td>
+                <td>${item.weight}</td>
+                <td><span class="score-cell">${item.expected}</span></td>
+                <td><span class="score-cell ${q12Class}">${item.q12}</span></td>
+                <td><span class="score-cell ${q34Class}">${item.q34}</span></td>
+                <td><span class="score-cell ${progressClass}">${progressText}</span></td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+        // Add total row
+        const totalRow = document.createElement('tr');
+        totalRow.style.background = 'rgba(99, 102, 241, 0.2)';
+        totalRow.style.fontWeight = 'bold';
+        totalRow.innerHTML = `
+            <td colspan="3"><strong>TỔNG ĐIỂM</strong></td>
+            <td><span class="score-cell" style="background: rgba(99, 102, 241, 0.3); color: #a5b4fc;">136</span></td>
+            <td><span class="score-cell score-warning">92</span></td>
+            <td><span class="score-cell score-good">109</span></td>
+            <td><span class="score-cell score-good">+17 ↑</span></td>
+        `;
+        tableBody.appendChild(totalRow);
+    </script>
+</body>
+
+</html>
